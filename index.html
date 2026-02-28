@@ -48,8 +48,12 @@
       border: none;
       font-family: var(--sans);
       font-size: 0.9rem;
+      transition: transform 0.25s ease, opacity 0.25s ease;
     }
-    .menu-trigger:hover { opacity: 0.95; }
+    .menu-trigger:hover {
+      opacity: 0.95;
+      transform: translateY(-50%) translateX(-4px);
+    }
 
     /* Slide-out panel */
     .menu-overlay {
@@ -104,23 +108,35 @@
       padding: 0.4rem 0;
     }
     .menu-panel a:hover { color: var(--accent); }
+    .menu-panel .menu-phone-wrap { margin: 1.25rem 0 0.5rem 0; }
     .menu-panel .menu-phone {
-      margin-top: 1rem;
-      font-weight: 600;
-      color: var(--accent);
-    }
-    .menu-panel .menu-cta {
       display: inline-block;
+      margin: 0;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .menu-panel .menu-phone:hover { color: var(--text); }
+    .menu-panel .menu-cta {
+      display: block;
       margin-top: 1rem;
-      padding: 0.75rem 1.25rem;
+      padding: 0.85rem 1.5rem;
       background: var(--accent);
-      color: var(--bg);
+      color: var(--bg) !important;
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       letter-spacing: 0.05em;
-      border: none;
+      text-align: center;
+      border-radius: 6px;
       cursor: pointer;
+      transition: transform 0.25s ease, background 0.2s ease;
+      border: none;
+    }
+    .menu-panel .menu-cta:hover {
+      transform: translateY(-3px);
+      background: #6d5309;
     }
 
     /* Hero */
@@ -133,7 +149,65 @@
       text-align: center;
       overflow: hidden;
     }
-    .hero-video {
+    .hero-topbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+    }
+    .hero-topbar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: opacity 0.2s ease;
+    }
+    .hero-topbar a:hover {
+      opacity: 0.85;
+    }
+    .hero-topbar .hero-phone {
+      letter-spacing: 0.02em;
+    }
+    .hero-topbar .hero-messenger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 0.9rem;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 6px;
+      font-size: 0.88rem;
+    }
+    .hero-topbar .hero-messenger:hover {
+      opacity: 0.9;
+      border-color: #fff;
+    }
+    .hero-slides {
+      position: absolute;
+      inset: 0;
+    }
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    .hero-slide.is-active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 1;
+    }
+    .hero-slide video {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -150,6 +224,46 @@
       z-index: 2;
       padding: 2rem;
       max-width: 720px;
+    }
+    .hero-tagline--small {
+      max-width: 360px;
+      margin: 0 auto;
+      font-size: 0.95rem;
+    }
+    .hero-nav {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 0;
+      right: 0;
+      z-index: 15;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1.25rem;
+      pointer-events: none;
+    }
+    .hero-nav-btn {
+      pointer-events: auto;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255,255,255,0.5);
+      background: rgba(0,0,0,0.2);
+      color: #fff;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      line-height: 1;
+      transition: opacity 0.2s ease, border-color 0.2s ease;
+    }
+    .hero-nav-btn:hover {
+      opacity: 0.9;
+      border-color: rgba(255,255,255,0.8);
+    }
+    .hero-nav-btn:focus {
+      outline: none;
     }
     .hero-label {
       font-family: var(--serif);
@@ -192,6 +306,13 @@
       background: transparent;
       color: #fff;
       border: 2px solid rgba(255,255,255,0.8);
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    }
+    .hero-content .btn-outline:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+      transform: translateY(-3px);
     }
     .btn-outline-light {
       background: transparent;
@@ -332,6 +453,50 @@
       background: #fff;
       box-shadow: 0 4px 20px rgba(0,0,0,0.06);
     }
+    #contacts .form-block.form-block--collapsible {
+      padding: 0;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    #contacts .form-block.form-block--collapsible .form-block__toggle {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      text-align: left;
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text);
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #contacts .form-block.form-block--collapsible .form-block__toggle:hover {
+      background: #fafaf8;
+    }
+    #contacts .form-block.form-block--collapsible .form-block__toggle::after {
+      content: '▼';
+      font-size: 0.7rem;
+      transition: transform 0.25s ease;
+    }
+    #contacts .form-block.form-block--collapsible.is-open .form-block__toggle::after {
+      transform: rotate(-180deg);
+    }
+    #contacts .form-block .form-block__body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    #contacts .form-block.is-open .form-block__body {
+      max-height: 600px;
+    }
+    #contacts .form-block .form-block__body-inner {
+      padding: 1rem 1.5rem 1.5rem;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
     #contacts .form-block h3 {
       font-family: var(--serif);
       font-size: 1.35rem;
@@ -445,20 +610,45 @@
       <a href="https://moreburo.ru" target="_blank" rel="noopener">Блог</a>
       <a href="#contacts">Контакты</a>
     </nav>
-    <a href="tel:+79217447110" class="menu-phone">+7 (921) 744-71-10</a>
-    <a href="#contacts" class="menu-cta" id="menuCtaSmeta">ЗАЯВКА на смету</a>
+    <p class="menu-phone-wrap">
+      <a href="tel:+79217447110" class="menu-phone">+7 (921) 744-71-10</a>
+    </p>
+    <a href="#contacts" class="menu-cta" id="menuCtaSmeta" data-default="ЗАЯВКА на смету">ЗАЯВКА на смету</a>
   </aside>
 
   <header class="hero">
-    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline>
-      <source src="video/hero.mp4" type="video/mp4">
-    </video>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <p class="hero-label">БЮРО СОБЫТИЙ</p>
-      <h1>MORE BURO</h1>
-      <p class="hero-tagline">Организация и оформление важных событий по всему миру с вашей индивидуальной историей</p>
-      <button type="button" class="btn btn-outline" id="heroCallback">ЗАКАЗАТЬ ЗВОНОК</button>
+    <div class="hero-topbar">
+      <a href="tel:+79217447110" class="hero-phone">+7 (921) 744-71-10</a>
+      <a href="https://t.me/kristina_moreburo" target="_blank" rel="noopener" class="hero-messenger">Telegram</a>
+    </div>
+    <div class="hero-slides">
+      <div class="hero-slide is-active" data-slide="0">
+        <video id="heroVideo" autoplay muted loop playsinline>
+          <source src="video/hero.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="hero-label">БЮРО СОБЫТИЙ</p>
+          <h1>MORE BURO</h1>
+          <p class="hero-tagline">Организация и оформление важных событий по всему миру с вашей индивидуальной историей</p>
+          <button type="button" class="btn btn-outline" id="heroCallback">ЗАКАЗАТЬ ЗВОНОК</button>
+        </div>
+      </div>
+      <div class="hero-slide" data-slide="1">
+        <video id="heroVideo2" muted loop playsinline>
+          <source src="video/hero2.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="hero-label">БЮРО СОБЫТИЙ</p>
+          <h1>MORE BURO</h1>
+          <p class="hero-tagline hero-tagline--small">Топ-10 и Топ-15 лучших декораторов России, победитель и финалист премий в области свадеб и декора.</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero-nav">
+      <button type="button" class="hero-nav-btn" id="heroPrev" aria-label="Предыдущее видео">‹</button>
+      <button type="button" class="hero-nav-btn" id="heroNext" aria-label="Следующее видео">›</button>
     </div>
   </header>
 
@@ -566,24 +756,28 @@
       <a href="https://wa.me/79217447110" target="_blank" rel="noopener">WhatsApp</a>
     </div>
     <div class="contact-buttons">
-      <a href="#contacts-form" class="btn">ЗАПИСАТЬСЯ НА ВСТРЕЧУ</a>
+      <a href="#contacts-form" class="btn" id="contactsFormOpen">ЗАПИСАТЬСЯ НА ВСТРЕЧУ</a>
       <button type="button" class="btn btn-outline-light" id="contactsCallback">Заказать звонок</button>
     </div>
-    <div class="form-block" id="contacts-form">
-      <h3>Заявка на расчёт сметы</h3>
-      <form action="https://formspree.io/f/YOUR_FORM_ID" method="post">
-        <label>Дата мероприятия <input type="text" name="date" placeholder="Дата"></label>
-        <label>Количество гостей <input type="text" name="guests" placeholder="Гости"></label>
-        <label>Город <input type="text" name="city" placeholder="Город"></label>
-        <div class="checkboxes">
-          <label><input type="checkbox" name="service[]" value="decor"> Оформление</label>
-          <label><input type="checkbox" name="service[]" value="org"> Организация</label>
+    <div class="form-block form-block--collapsible" id="contacts-form">
+      <button type="button" class="form-block__toggle" id="contactsFormToggle" aria-expanded="false" aria-controls="contactsFormBody">Заявка на расчёт сметы</button>
+      <div class="form-block__body" id="contactsFormBody">
+        <div class="form-block__body-inner">
+          <form action="https://formspree.io/f/YOUR_FORM_ID" method="post">
+            <label>Дата мероприятия <input type="text" name="date" placeholder="Дата"></label>
+            <label>Количество гостей <input type="text" name="guests" placeholder="Гости"></label>
+            <label>Город <input type="text" name="city" placeholder="Город"></label>
+            <div class="checkboxes">
+              <label><input type="checkbox" name="service[]" value="decor"> Оформление</label>
+              <label><input type="checkbox" name="service[]" value="org"> Организация</label>
+            </div>
+            <label>Детали <textarea name="details" placeholder="Опишите пожелания"></textarea></label>
+            <label>Email <input type="email" name="email" required></label>
+            <label>Телефон <input type="tel" name="phone" required></label>
+            <button type="submit" class="btn">Отправить</button>
+          </form>
         </div>
-        <label>Детали <textarea name="details" placeholder="Опишите пожелания"></textarea></label>
-        <label>Email <input type="email" name="email" required></label>
-        <label>Телефон <input type="tel" name="phone" required></label>
-        <button type="submit" class="btn">Отправить</button>
-      </form>
+      </div>
     </div>
   </section>
 
@@ -626,7 +820,87 @@
       if (menuTrigger) menuTrigger.addEventListener('click', openMenu);
       if (menuClose) menuClose.addEventListener('click', closeMenu);
       if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
-      if (menuCtaSmeta) menuCtaSmeta.addEventListener('click', function() { closeMenu(); });
+      if (menuCtaSmeta) {
+        menuCtaSmeta.addEventListener('click', function() { closeMenu(); });
+        menuCtaSmeta.addEventListener('mouseenter', function() {
+          this.textContent = 'Хочу!';
+        });
+        menuCtaSmeta.addEventListener('mouseleave', function() {
+          this.textContent = this.getAttribute('data-default') || 'ЗАЯВКА на смету';
+        });
+      }
+
+      var heroSlides = document.querySelectorAll('.hero-slide');
+      var heroVideo = document.getElementById('heroVideo');
+      var heroVideo2 = document.getElementById('heroVideo2');
+      var heroPrev = document.getElementById('heroPrev');
+      var heroNext = document.getElementById('heroNext');
+      var currentSlide = 0;
+      var totalSlides = heroSlides.length;
+
+      function goToSlide(index) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        currentSlide = index;
+        heroSlides.forEach(function(slide, i) {
+          slide.classList.toggle('is-active', i === currentSlide);
+          var v = slide.querySelector('video');
+          if (v) {
+            if (i === currentSlide) {
+              v.play().catch(function() {});
+            } else {
+              v.pause();
+            }
+          }
+        });
+      }
+      if (heroPrev) heroPrev.addEventListener('click', function() { goToSlide(currentSlide - 1); });
+      if (heroNext) heroNext.addEventListener('click', function() { goToSlide(currentSlide + 1); });
+
+      var heroEl = document.querySelector('.hero');
+      var heroInLeftZone = false;
+      var heroInRightZone = false;
+      var HERO_ZONE = 0.2;
+      if (heroEl) {
+        heroEl.addEventListener('mousemove', function(e) {
+          var w = heroEl.offsetWidth;
+          var x = e.clientX - heroEl.getBoundingClientRect().left;
+          var inLeft = x < w * HERO_ZONE;
+          var inRight = x > w * (1 - HERO_ZONE);
+          if (inLeft && !heroInLeftZone) {
+            heroInLeftZone = true;
+            heroInRightZone = false;
+            goToSlide(currentSlide - 1);
+          } else if (inRight && !heroInRightZone) {
+            heroInRightZone = true;
+            heroInLeftZone = false;
+            goToSlide(currentSlide + 1);
+          } else if (!inLeft && !inRight) {
+            heroInLeftZone = false;
+            heroInRightZone = false;
+          }
+        });
+        heroEl.addEventListener('mouseleave', function() {
+          heroInLeftZone = false;
+          heroInRightZone = false;
+        });
+      }
+
+      var contactsForm = document.getElementById('contacts-form');
+      var contactsFormToggle = document.getElementById('contactsFormToggle');
+      var contactsFormOpen = document.getElementById('contactsFormOpen');
+      if (contactsForm && contactsFormToggle) {
+        contactsFormToggle.addEventListener('click', function() {
+          var open = contactsForm.classList.toggle('is-open');
+          contactsFormToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      }
+      if (contactsFormOpen && contactsForm) {
+        contactsFormOpen.addEventListener('click', function() {
+          contactsForm.classList.add('is-open');
+          if (contactsFormToggle) contactsFormToggle.setAttribute('aria-expanded', 'true');
+        });
+      }
 
       var callbackModal = document.getElementById('callbackModal');
       var modalClose = document.getElementById('modalClose');
@@ -653,11 +927,11 @@
         if (e.target === callbackModal) closeModal();
       });
 
-      var heroVideo = document.getElementById('heroVideo');
       if (heroVideo) {
-        heroVideo.addEventListener('error', function() {
-          heroVideo.style.display = 'none';
-        });
+        heroVideo.addEventListener('error', function() { heroVideo.style.display = 'none'; });
+      }
+      if (heroVideo2) {
+        heroVideo2.addEventListener('error', function() { heroVideo2.style.display = 'none'; });
       }
     })();
   </script>
