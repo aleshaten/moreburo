@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>More Buro</title>
+  <meta name="description" content="Бюро событий More Buro — организация и оформление важных событий по всему миру с вашей индивидуальной историей.">
+  <meta name="theme-color" content="#fafaf8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafaf8;
+      --text: #1c1c1c;
+      --muted: #5c5c5c;
+      --accent: #8b6914;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --sans: "Montserrat", sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* Menu trigger strip (right) */
+    .menu-trigger {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      padding: 1rem 0.75rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      z-index: 100;
+      border: none;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+    }
+    .menu-trigger:hover { opacity: 0.95; }
+
+    /* Slide-out panel */
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+      z-index: 198;
+    }
+    .menu-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 320px;
+      height: 100%;
+      background: var(--bg);
+      box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+      padding: 2rem 1.5rem;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 200;
+      overflow-y: auto;
+    }
+    .menu-panel.is-open { transform: translateX(0); }
+    .menu-panel .menu-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .menu-panel nav {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .menu-panel a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.4rem 0;
+    }
+    .menu-panel a:hover { color: var(--accent); }
+    .menu-panel .menu-phone {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .menu-panel .menu-cta {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.25rem;
+      background: var(--accent);
+      color: var(--bg);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 2rem;
+      max-width: 720px;
+    }
+    .hero-label {
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 0.5rem;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #fff;
+      margin: 0 0 1rem;
+    }
+    .hero-tagline {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 1.5rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 1.8rem;
+      background: var(--accent);
+      color: var(--bg);
+      text-decoration: none;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.8);
+    }
+    .btn-outline-light {
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--accent);
+    }
+    .btn-outline-light:hover { opacity: 0.9; }
+
+    /* Sections */
+    section {
+      padding: 4rem 1.5rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+    .section-text {
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .section-text a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .section-text a:hover { text-decoration: underline; }
+
+    /* About */
+    #about .awards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    #about .award-tag {
+      padding: 0.35rem 0.75rem;
+      background: rgba(139, 105, 20, 0.12);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    #about .team {
+      margin-top: 1rem;
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    /* Portfolio */
+    #portfolio .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    #portfolio .card {
+      background: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    #portfolio .card-image {
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #e8e4dc, #d4cfc4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    #portfolio .card-body { padding: 1rem; }
+    #portfolio .card-title {
+      font-family: var(--serif);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    #portfolio .card-link {
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    #portfolio .card-link:hover { text-decoration: underline; }
+    #portfolio .portfolio-cta { margin-top: 1.5rem; }
+
+    /* Services */
+    #services .services-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    #services .service-card {
+      padding: 1.5rem;
+      background: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border-left: 4px solid var(--accent);
+    }
+    #services .service-card h3 {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    #services .service-card ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Reviews */
+    #reviews .reviews-cta { margin-top: 1rem; }
+
+    /* Contacts */
+    #contacts .contact-links {
+      margin: 1rem 0;
+    }
+    #contacts .contact-links a {
+      display: inline-block;
+      margin-right: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    #contacts .contact-buttons {
+      margin: 1rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    #contacts .form-block {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    #contacts .form-block h3 {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+    }
+    #contacts form label {
+      display: block;
+      margin-top: 0.75rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    #contacts form input,
+    #contacts form textarea {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ddd;
+      font-family: var(--sans);
+      font-size: 1rem;
+    }
+    #contacts form textarea { min-height: 100px; resize: vertical; }
+    #contacts form .checkboxes label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      font-weight: 400;
+    }
+    #contacts form .checkboxes input { width: auto; }
+    #contacts form button[type="submit"] {
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+      z-index: 300;
+    }
+    .modal-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal {
+      background: var(--bg);
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .modal h3 {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .modal form label { display: block; margin-top: 0.75rem; font-weight: 500; }
+    .modal form input {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ddd;
+      font-family: var(--sans);
+    }
+    .modal form button[type="submit"] { margin-top: 1rem; cursor: pointer; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <button type="button" class="menu-trigger" id="menuTrigger" aria-label="Открыть меню">Меню</button>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <aside class="menu-panel" id="menuPanel">
+    <button type="button" class="menu-close" id="menuClose" aria-label="Закрыть меню">&times;</button>
+    <nav>
+      <a href="#about">О компании</a>
+      <a href="#services">Услуги</a>
+      <a href="#contacts">Стоимость</a>
+      <a href="#portfolio">Портфолио</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="https://moreburo.ru" target="_blank" rel="noopener">Блог</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <a href="tel:+79217447110" class="menu-phone">+7 (921) 744-71-10</a>
+    <a href="#contacts" class="menu-cta" id="menuCtaSmeta">ЗАЯВКА на смету</a>
+  </aside>
+
+  <header class="hero">
+    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline>
+      <source src="video/hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-label">БЮРО СОБЫТИЙ</p>
+      <h1>MORE BURO</h1>
+      <p class="hero-tagline">Организация и оформление важных событий по всему миру с вашей индивидуальной историей</p>
+      <button type="button" class="btn btn-outline" id="heroCallback">ЗАКАЗАТЬ ЗВОНОК</button>
+    </div>
+  </header>
+
+  <section id="about">
+    <h2 class="section-title">О компании</h2>
+    <p class="section-text">Бюро «More Buro» — ваш верный помощник и вдохновитель, работа которого — брать все заботы на себя и организовать для вас поистине особенное событие!</p>
+    <p class="section-text"><a href="https://moreburo.ru" target="_blank" rel="noopener">Читать далее</a></p>
+    <div class="awards">
+      <span class="award-tag">Топ-10 декораторов 2022</span>
+      <span class="award-tag">Топ-15 2024</span>
+    </div>
+    <p class="team">Кристина и Алиса</p>
+  </section>
+
+  <section id="portfolio">
+    <h2 class="section-title">Портфолио</h2>
+    <p class="section-text">Каждое мероприятие — это отражение истории любви наших пар. Вы — лучшее вдохновение для нашей команды!</p>
+    <a href="https://moreburo.ru" target="_blank" rel="noopener" class="btn portfolio-cta">ФОТОГАЛЕРЕЯ</a>
+    <div class="portfolio-grid">
+      <div class="card">
+        <div class="card-image">Та самая Барби</div>
+        <div class="card-body">
+          <div class="card-title">Та самая Барби</div>
+          <a href="https://moreburo.ru" target="_blank" rel="noopener" class="card-link">Смотреть на сайте</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image">Александр и Полина</div>
+        <div class="card-body">
+          <div class="card-title">Александр и Полина</div>
+          <a href="https://moreburo.ru" target="_blank" rel="noopener" class="card-link">Смотреть на сайте</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image">Иван и Кристина</div>
+        <div class="card-body">
+          <div class="card-title">Иван и Кристина</div>
+          <a href="https://moreburo.ru" target="_blank" rel="noopener" class="card-link">Смотреть на сайте</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image">Бал вампиров</div>
+        <div class="card-body">
+          <div class="card-title">Бал вампиров</div>
+          <a href="https://moreburo.ru" target="_blank" rel="noopener" class="card-link">Смотреть на сайте</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image">Dolce Vita</div>
+        <div class="card-body">
+          <div class="card-title">Dolce Vita</div>
+          <a href="https://moreburo.ru" target="_blank" rel="noopener" class="card-link">Смотреть на сайте</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image">День рождения Wawelberg</div>
+        <div class="card-body">
+          <div class="card-title">День рождения Wawelberg</div>
+          <a href="https://moreburo.ru" target="_blank" rel="noopener" class="card-link">Смотреть на сайте</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <h2 class="section-title">Свадебные услуги</h2>
+    <p class="section-text">Мы создаём события, в которых каждая деталь отражает вашу историю. More Buro берёт на себя организацию и декор, чтобы вы могли полностью погрузиться в праздник.</p>
+    <p class="section-text"><a href="https://moreburo.ru" target="_blank" rel="noopener">Читать далее</a></p>
+    <div class="services-cards">
+      <div class="service-card">
+        <h3>Организация</h3>
+        <ul>
+          <li>Свадьбы</li>
+          <li>Дни рождения</li>
+          <li>Корпоративы</li>
+          <li>За границей</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <h3>Декор</h3>
+        <ul>
+          <li>Свадьбы</li>
+          <li>Дни рождения</li>
+          <li>Корпоративы</li>
+          <li>За границей</li>
+        </ul>
+      </div>
+    </div>
+    <p class="section-text"><a href="https://disk.yandex.ru" target="_blank" rel="noopener">Презентации на Яндекс.Диске</a></p>
+    <a href="#contacts" class="btn">ЗАЯВКА НА СМЕТУ</a>
+  </section>
+
+  <section id="reviews">
+    <h2 class="section-title">Отзывы</h2>
+    <p class="section-text">Наши клиенты делятся впечатлениями о проведённых мероприятиях.</p>
+    <a href="https://moreburo.ru" target="_blank" rel="noopener" class="btn reviews-cta">Узнать больше</a>
+  </section>
+
+  <section id="contacts">
+    <h2 class="section-title">Контакты</h2>
+    <p class="section-text">Звоните и приезжайте к нам на чашку кофе или чая, чтобы обсудить детали вашего мероприятия.</p>
+    <div class="contact-links">
+      <a href="https://t.me/kristina_moreburo" target="_blank" rel="noopener">Telegram</a>
+      <a href="tel:+79217447110">+7 (921) 744-71-10</a>
+      <a href="https://wa.me/79217447110" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <div class="contact-buttons">
+      <a href="#contacts-form" class="btn">ЗАПИСАТЬСЯ НА ВСТРЕЧУ</a>
+      <button type="button" class="btn btn-outline-light" id="contactsCallback">Заказать звонок</button>
+    </div>
+    <div class="form-block" id="contacts-form">
+      <h3>Заявка на расчёт сметы</h3>
+      <form action="https://formspree.io/f/YOUR_FORM_ID" method="post">
+        <label>Дата мероприятия <input type="text" name="date" placeholder="Дата"></label>
+        <label>Количество гостей <input type="text" name="guests" placeholder="Гости"></label>
+        <label>Город <input type="text" name="city" placeholder="Город"></label>
+        <div class="checkboxes">
+          <label><input type="checkbox" name="service[]" value="decor"> Оформление</label>
+          <label><input type="checkbox" name="service[]" value="org"> Организация</label>
+        </div>
+        <label>Детали <textarea name="details" placeholder="Опишите пожелания"></textarea></label>
+        <label>Email <input type="email" name="email" required></label>
+        <label>Телефон <input type="tel" name="phone" required></label>
+        <button type="submit" class="btn">Отправить</button>
+      </form>
+    </div>
+  </section>
+
+  <div class="modal-overlay" id="callbackModal">
+    <div class="modal">
+      <button type="button" class="modal-close" id="modalClose" aria-label="Закрыть">&times;</button>
+      <h3>Заказать звонок</h3>
+      <form action="https://formspree.io/f/YOUR_FORM_ID" method="post">
+        <input type="hidden" name="subject" value="Заказ звонка">
+        <label>Имя <input type="text" name="name" required></label>
+        <label>Телефон <input type="tel" name="phone" required></label>
+        <button type="submit" class="btn">Отправить</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    © 2017 — 2025 <a href="https://moreburo.ru" target="_blank" rel="noopener">More Buro</a>
+  </footer>
+
+  <script>
+    (function() {
+      var menuTrigger = document.getElementById('menuTrigger');
+      var menuPanel = document.getElementById('menuPanel');
+      var menuOverlay = document.getElementById('menuOverlay');
+      var menuClose = document.getElementById('menuClose');
+      var menuCtaSmeta = document.getElementById('menuCtaSmeta');
+
+      function openMenu() {
+        menuPanel.classList.add('is-open');
+        menuOverlay.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeMenu() {
+        menuPanel.classList.remove('is-open');
+        menuOverlay.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+
+      if (menuTrigger) menuTrigger.addEventListener('click', openMenu);
+      if (menuClose) menuClose.addEventListener('click', closeMenu);
+      if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
+      if (menuCtaSmeta) menuCtaSmeta.addEventListener('click', function() { closeMenu(); });
+
+      var callbackModal = document.getElementById('callbackModal');
+      var modalClose = document.getElementById('modalClose');
+      var heroCallback = document.getElementById('heroCallback');
+      var contactsCallback = document.getElementById('contactsCallback');
+
+      function openModal() {
+        if (callbackModal) {
+          callbackModal.classList.add('is-open');
+          document.body.style.overflow = 'hidden';
+        }
+      }
+      function closeModal() {
+        if (callbackModal) {
+          callbackModal.classList.remove('is-open');
+          document.body.style.overflow = '';
+        }
+      }
+
+      if (heroCallback) heroCallback.addEventListener('click', openModal);
+      if (contactsCallback) contactsCallback.addEventListener('click', openModal);
+      if (modalClose) modalClose.addEventListener('click', closeModal);
+      if (callbackModal) callbackModal.addEventListener('click', function(e) {
+        if (e.target === callbackModal) closeModal();
+      });
+
+      var heroVideo = document.getElementById('heroVideo');
+      if (heroVideo) {
+        heroVideo.addEventListener('error', function() {
+          heroVideo.style.display = 'none';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
